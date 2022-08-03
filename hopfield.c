@@ -1,6 +1,5 @@
-#include <stdlib.h> // for malloc (will be hardcoded instead) and random number generator. maybe other stuff too idk
+#include <stdlib.h> // for random number generator. maybe other stuff too idk
 #include <stdio.h> // for debugging
-#include <math.h>  // also for debugging
 
 // Train network with the hebbian rule. I guess maybe we can just do this beforehand and hardcode the matrix?
 // change the [2][4] thing to [#patterns][#neurons] when we do it for real

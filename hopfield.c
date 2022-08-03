@@ -72,11 +72,29 @@ void show_pattern(double* pattern, int pattern_length) {
     printf("\n");
 }
 
+double * generate_input(double patterns[5][64]) {
+    static double current_pattern[64];
+
+
+    //choose a pattern and add 30% noise
+    int pattern_id =  (rand() % (5));
+    printf("%d\n", pattern_id);
+    for(int i = 0; i < 64; ++i){
+        current_pattern[i] = patterns[pattern_id][i];
+    }
+    for(int i = 0; i < 64; ++i) {
+        current_pattern[i] *= (rand()*1.0/RAND_MAX > ((double)0.3)) ? 1 : -1;
+    }
+    return current_pattern;
+
+}
+
+
+
 
 int main(int argc, char** argv) {
     int num_neurons = 64;
     int num_patterns = 5;
-    srand(9);
     //initialize weights
     double * weights = malloc(sizeof(double) * num_neurons * num_neurons);
     for(int i = 0; i < num_neurons; i++) {
@@ -139,39 +157,22 @@ int main(int argc, char** argv) {
          -1,1,1,1,1,1,1,-1,
          -1,1,1,1,1,1,1,-1},
      };
-
-    show_pattern(patterns[0],  8);
-    show_pattern(patterns[1],  8);
-    show_pattern(patterns[2],  8);
-    show_pattern(patterns[3],  8);
-    show_pattern(patterns[4],  8);
-                             
     
 
     train_network(weights, num_neurons, patterns, num_patterns);
 
-    // network state to test
-    double * current_pattern = malloc(sizeof(double) * num_neurons);
-
-    //choose a pattern and add 30% noise
-    int pattern_id =  (rand() % (5));
-    printf("%d\n", pattern_id);
-    for(int i = 0; i < num_neurons; ++i){
-    current_pattern[i] = patterns[pattern_id][i];
-    }
-    for(int i = 0; i < num_neurons; ++i) {
-        current_pattern[i] *= (rand()*1.0/RAND_MAX > ((double)0.3)) ? 1 : -1;
-    }
+    //start with randomish pattern
+    double * current_pattern = generate_input(patterns);
 
 
-
+    //print training patterns
     printf("training patterns:\n");
     for(int i = 0; i < num_patterns; ++i) {
-        show_pattern(patterns[i],  sqrt(num_neurons));
+        show_pattern(patterns[i],  8);
     }
+    //print input pattern
     printf("input pattern\n");
-    show_pattern(current_pattern,  sqrt(num_neurons));
-
+    show_pattern(current_pattern,  8);
     // iterate
     for(int iterations = 0; iterations < 10; ++iterations){
         run_network_iterations(weights,  num_neurons, current_pattern, 1);

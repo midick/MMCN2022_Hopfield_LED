@@ -90,7 +90,7 @@ double * generate_input(double patterns[5][64]) {
 
 
 
-int main(int argc, char** argv) {
+int main2(int argc, char** argv) {
     int num_neurons = 64;
     int num_patterns = 5;
 
